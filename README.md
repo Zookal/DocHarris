@@ -233,14 +233,16 @@ Should look like this:
 
 ```
 $ docker ps -a
-CONTAINER ID        IMAGE                           COMMAND                CREATED             STATUS                         PORTS                                      NAMES
-6ec4237ee125        docharris/nginx:latest          "/configs/boot.sh"     About an hour ago   Up About an hour               0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp   nginx
-555f71b1bdc7        docharris/php55:latest          "bash"                 About an hour ago   Up About an hour               9000/tcp                                   nginx/php,php
-5e4f3ab03139        docharris/npstorage:latest      "/configs/boot.sh"     About an hour ago   Exited (0) About an hour ago                                              npstorage
-23cc3a980931        docharris/mysql55:latest        "/run.sh"              About an hour ago   Up About an hour               0.0.0.0:3306->3306/tcp                     DocHarrisMySQL,nginx/php/DocHarrisMySQL,php/DocHarrisMySQL
-f70db4d54343        docharris/redissession:latest   "redis-server /etc/r   4 hours ago         Up 4 hours                     6380/tcp                                   nginx/php/redissession,php/redissession,redissession
-c9433d879fce        docharris/redisobject:latest    "redis-server /etc/r   4 hours ago         Up 4 hours                     6379/tcp                                   nginx/php/redisobject,php/redisobject,redisobject
-ecf97f84644d        dockerfile/ubuntu:latest        "echo 'Redis Storage   4 hours ago         Exited (0) 4 hours ago                                                    RedisStorage
+CONTAINER ID        IMAGE                              COMMAND                CREATED              STATUS                     PORTS                                      NAMES
+7c32179f05b5        crosbymichael/dockerui:latest      "./dockerui -e /dock   About a minute ago   Up About a minute          0.0.0.0:9000->9000/tcp                     dockerui
+6a7240217004        docharris/nginx:v1.0.162           "nginx"                3 minutes ago        Up 3 minutes               0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp   nginx
+d991e16d795e        docharris/php55:v1.0.5517          "/configs/boot.sh"     3 minutes ago        Up 3 minutes               9000/tcp                                   nginx/php,php
+39092564dfa3        docharris/npstorage:v1.0.0         "/configs/boot.sh"     3 minutes ago        Exited (0) 3 minutes ago                                              npstorage
+441f055339bf        docharris/mysql55:v1.0.5538        "/run.sh"              3 minutes ago        Up 3 minutes               0.0.0.0:3306->3306/tcp                     DocHarrisMySQL,nginx/php/DocHarrisMySQL,php/DocHarrisMySQL
+22bd1739e193        docharris/redissession:v1.0.2817   "redis-server /etc/r   3 minutes ago        Up 3 minutes               6380/tcp                                   nginx/php/redissession,php/redissession,redissession
+e47e9c8756da        docharris/redisobject:v1.0.2817    "redis-server /etc/r   3 minutes ago        Up 3 minutes               6379/tcp                                   nginx/php/redisobject,php/redisobject,redisobject
+f5ab4b7c3582        dockerfile/ubuntu:latest           "echo 'Redis Storage   3 minutes ago        Exited (0) 3 minutes ago                                              RedisStorage
+4c9a884017cf        docharris/mailcatcher:v1.0.0512    "/bin/sh -c 'mailcat   3 minutes ago        Up 3 minutes               25/tcp, 0.0.0.0:1080->1080/tcp             mailcatcher,nginx/php/mailcatcher,php/mailcatcher
 ```
 
 # Docker Helpers
