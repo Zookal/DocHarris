@@ -197,6 +197,8 @@ Run the container background with custom nginx config:
 
 # DocHarris Pulling existing builds
 
+Resource [https://registry.hub.docker.com/repos/docharris/](https://registry.hub.docker.com/repos/docharris/)
+
 Use this docker pull for the development environment:
 
 	docker pull docharris/redisobject:v1.0.2817
@@ -220,6 +222,8 @@ Version number: Major.Minor.Service
 - PHP 5517 = 5.5.17
 - MySQL 5538 = 5.5.38
 - Redis 2817 = 2.8.17
+
+Whenever a Services changes this will be reflected in the last number. Whenever something in the Dockerfile changes this will reflect the Major and Minor numbers.
   
 The version in the `Makefile` will be updated and not here.
 
