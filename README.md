@@ -4,14 +4,18 @@
 
 ### Optimized for composer.org usage. See project [HarrisStreet](https://github.com/Zookal/HarrisStreet).
 
-If you are developing on a linux machine `boot2docker` is not needed.
+Condition: Already installed and working Magento System.
+
+If you are already working/developing on a linux machine `boot2docker` is not needed.
 
 Install [boot2docker](http://boot2docker.io) and [Docker](https://docs.docker.com/) itself. 
 
-On OSX please use `brew install docker|boot2docker`
+On OSX please use `brew install docker | boot2docker`
 
 Download the Zookal custom [boot2docker.iso](https://github.com/Zookal/boot2docker/raw/master/boot2docker.iso.gz) 
 which fixes vboxsf autoload and place the ISO in the correct folder of your OS. 
+
+Shared Folders are slow in VirtualBox. A todo point is implementing [File system notifications for Go](https://github.com/go-fsnotify/fsnotify) into the boot2docker CLI to constantly sync the files into the VM. There is already some work [going on](https://github.com/boot2docker/boot2docker-cli/pulls).
 
 For OSX put the ISO in: `~/.boot2docker/` folder.
 
@@ -19,15 +23,15 @@ For Win put the ISO in: `???` folder.
 
 The folders `site` and `data` are hardcoded in the boot2docker.iso and always maps to: `/var/www/site` resp. `/var/www/data`.
 
-Documents will be served from `/var/www/site/htdocs`. `media`, `sitemap` and `var` folders are automatically symlinked into the `htdocs` folder.
+Documents will be served from `/var/www/site/htdocs`. `media`, `sitemap` and `var` folders are automatically symlinked into the `htdocs` folder. These three folders stay in the data folder for persistence. 
 
 Mac OSX:
 
-    $ boot2docker --vbox-share=/Users/xxx/Sites/zookal-site=site --vbox-share=/Users/xxx/Sites/zookal-data=data -v init
+	boot2docker --vbox-share=/Users/xxx/Sites/web-site=site --vbox-share=/Users/xxx/Sites/web-data=data -v init
     
 Windows:
     
-    $ boot2docker --vbox-share="C:\\Users\xxx\\...=site" --vbox-share="C:\\Users\xxx\\...=data" -v init
+	boot2docker --vbox-share="C:\\Users\xxx\\...=site" --vbox-share="C:\\Users\xxx\\...=data" -v init
     
 Start VM:
     
@@ -128,6 +132,7 @@ Build the php container:
 
     docker run -d --name php \
       --volumes-from=npstorage \
+      -v /var/www/site/path-to/etc/php55/development:/etc/php5/fpm \
       -e PHP_ENV=dev \
       --link redisobject:redisobject \
       --link redissession:redissession \
@@ -135,10 +140,13 @@ Build the php container:
       --link mailcatcher:mailcatcher \
       docharris/php55
 
+The `-v` switch is optional and maps your custom php config into the fpm folder.
+
 ### Run with bash for dev:
 
     docker run -ti --rm --name php \
       --volumes-from=npstorage \
+      -v /var/www/site/path-to/etc/php55/development:/etc/php5/fpm \
       -e PHP_ENV=dev \
       --link redisobject:redisobject \
       --link redissession:redissession \
@@ -146,18 +154,23 @@ Build the php container:
       --link mailcatcher:mailcatcher \
       docharris/php55 bash
 
+The `-v` switch is optional and maps your custom php config into the fpm folder.
+
 The `bash` at the end starts the shell. When logged in run `/config/boot.sh &` to start the fpm process.
 
 There are two env settings at the momement: `dev` and `prod`.  During container start these settings will be copied into the etc folders. So you can test prod settings on your dev machine. 
 
-With the open shell you can now use n98-magerun, etc in the `/var/www/site` folder.
+With the open shell you can now use [n98-magerun](http://magerun.net/), etc in the `/var/www/site` folder.
 
-If you want to change the PHP settings and make it persistent you must rebuild the container.
+On the other hand you can have a local php installation on your Windows or OSX system and then run from there [n98-magerun](http://magerun.net/).
+
+There is no ssh daemon implemented in all docker containers because that is evil and a anti pattern.
 
 #### Run in background on staging | prod:
 
     docker run -d --name php \
       --volumes-from=npstorage \
+      -v /path-to/etc/php55/production:/etc/php5/fpm \
       -e PHP_ENV=prod \
       --link redisobject:redisobject \
       --link redissession:redissession \
@@ -181,8 +194,35 @@ Run the container background with custom nginx config:
       -p 80:80 \
       -p 443:443 \
       docharris/nginx
-    
+
+# DocHarris Pulling existing builds
+
+Use this docker pull for the development environment:
+
+	docker pull docharris/redisobject:v1.0.2817
+	docker pull docharris/redissession:v1.0.2817
+	docker pull docharris/mysql55:v1.0.5538
+	docker pull docharris/mailcatcher:v1.0.0512
+	docker pull docharris/npstorage:v1.0.0
+	docker pull docharris/php55:v1.0.5517
+	docker pull docharris/nginx:v1.0.162
+
+Use this docker pull for the production environment:
+
+	docker pull docharris/npstorage:v1.0.0
+	docker pull docharris/redisobject:v1.0.2817
+	docker pull docharris/redissession:v1.0.2817
+	docker pull docharris/php55:v1.0.5517
+	docker pull docharris/nginx:v1.0.162
+
+Version number: Major.Minor.Service
+
+- PHP 5517 = 5.5.17
+- MySQL 5538 = 5.5.38
+- Redis 2817 = 2.8.17
   
+The version in the `Makefile` will be updated and not here.
+
 # DocHarris in action
 
 Should look like this:

@@ -2,19 +2,20 @@ CONTAINERS := $(shell docker ps -a -q)
 IMAGES := $(shell docker images -a -q)
 
 pull-dev:
-	docker pull docharris/redisobject
-	docker pull docharris/redissession
-	docker pull docharris/mysql55
-	docker pull docharris/mailcatcher
-	docker pull docharris/npstorage
-	docker pull docharris/php55
-	docker pull docharris/nginx
+	docker pull docharris/redisobject:v1.0.2817
+	docker pull docharris/redissession:v1.0.2817
+	docker pull docharris/mysql55:v1.0.5538
+	docker pull docharris/mailcatcher:v1.0.0512
+	docker pull docharris/npstorage:v1.0.0
+	docker pull docharris/php55:v1.0.5517
+	docker pull docharris/nginx:v1.0.162
 
 pull-prod:
-	docker pull docharris/redisobject
-	docker pull docharris/redissession
-	docker pull docharris/php55
-	docker pull docharris/nginx
+    docker pull docharris/npstorage:v1.0.0
+	docker pull docharris/redisobject:v1.0.2817
+	docker pull docharris/redissession:v1.0.2817
+	docker pull docharris/php55:v1.0.5517
+	docker pull docharris/nginx:v1.0.162
 
 build:
 	docker build -t="docharris/redisobject" redis/object/
@@ -24,6 +25,7 @@ build:
 	docker build -t="docharris/npstorage" npStorage/
 	docker build -t="docharris/php55" php55/
 	docker build -t="docharris/nginx" nginx/
+	docker build -t="crosbymichael/dockerui" github.com/crosbymichael/dockerui
 
 run-dev:
 	docker run -d --name mailcatcher -p 1080:1080 docharris/mailcatcher
@@ -53,6 +55,4 @@ clean-container:
 	docker rm -f $(CONTAINERS)
 
 clean-images:
-	docker stop $(CONTAINERS)
-	docker rm -f $(CONTAINERS)
 	docker rmi -f $(IMAGES)
