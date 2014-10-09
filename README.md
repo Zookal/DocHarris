@@ -166,6 +166,8 @@ On the other hand you can have a local php installation on your Windows or OSX s
 
 There is no ssh daemon implemented in all docker containers because that is evil and a anti pattern.
 
+If you need to enter a container use nsenter [https://github.com/jpetazzo/nsenter](https://github.com/jpetazzo/nsenter).
+
 #### Run in background on staging | prod:
 
     docker run -d --name php \
@@ -174,9 +176,13 @@ There is no ssh daemon implemented in all docker containers because that is evil
       -e PHP_ENV=prod \
       --link redisobject:redisobject \
       --link redissession:redissession \
-      --link DocHarrisMySQL:DocHarrisMySQL \
-      zookal/php55
+      docharris/php55
 
+Use the switch
+
+      --link DocHarrisMySQL:DocHarrisMySQL \
+
+only when you don't have an external database on another server.
 
 # DocHarris nginx
 
@@ -280,6 +286,12 @@ Do not use it in production as it has no security.
 
 [dockerui on github](https://github.com/crosbymichael/dockerui)
 
+### Einfaches PHP basiertes Docker Web-Interface
+
+German blog post from [@cmuench](https://twitter.com/cmuench): [http://blog.muench-worms.de/einfaches-php-basiertes-docker-web-interface/](http://blog.muench-worms.de/einfaches-php-basiertes-docker-web-interface/)
+
+Github source code: [https://github.com/netz98/docker-ui](https://github.com/netz98/docker-ui)
+
 # FAQ
 
 ## How do I link in my PHP app to the dockerized MySQL resp. Redis daemon?
@@ -309,9 +321,28 @@ Don't care for the IP addresses as these ones are dynamic and change with each s
 
 You can then use as host name: DocHarrisMySQL, etc in you `app/etc/local.xml` config.
 
+## How can I use the PHP CLI when it runs in a background container?
+
+There is no ssh daemon implemented in all Docker containers because that is evil and an anti pattern.
+
+If you need to enter a container use nsenter [https://github.com/jpetazzo/nsenter](https://github.com/jpetazzo/nsenter).
+
+### On your Linux host
+
+	docker-enter [docharris/php55 or Container ID] php n98-magerun.phar
+	
+### On your OSX or Windows host
+
+	docker-enter() {
+		boot2docker ssh '[ -f /var/lib/boot2docker/nsenter ] || docker run --rm -v /var/lib/boot2docker/:/target jpetazzo/nsenter'
+		boot2docker ssh -t sudo /var/lib/boot2docker/docker-enter "$@"
+	}
+
+You can use it directly from your host, no need to ssh into boot2docker.
+
 # Contribute
 
-Please what ever you see tweet it, create an issue or open a pull request.
+Please what ever you see or think is wrong tweet it to @schumacherfm, create an issue or open a pull request.
 
 ### @todo
 
@@ -326,7 +357,7 @@ License
 Copyright
 ---------
 
-Copyright (c) Zookal Pty Ltd, Sydney Australia
+Copyright (c) Zookal Pty Ltd, Sydney, Australia
 
 Author
 ------
