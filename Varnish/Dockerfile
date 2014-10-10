@@ -24,14 +24,18 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 ADD config/default.vcl /etc/varnish/default.vcl
 ADD config/vcl/default.vcl /etc/varnish/vcl/default.vcl
 
-ENV VARNISH_BACKEND_PORT 80
-ENV VARNISH_BACKEND_IP 172.17.42.1
-ENV VARNISH_PORT 80
+RUN mkdir -p /var/cache/varnish
+
+ENV LISTEN_ADDR 0.0.0.0
+ENV LISTEN_PORT 80
+ENV TELNET_ADDR 0.0.0.0
+ENV TELNET_PORT 6083
+ENV CACHE_SIZE 500MB
 
 EXPOSE 80
 
 # allow full custom config instead of default ones
-VOLUME  ["/etc/varnish"]
+VOLUME  ["/etc/varnish", "/var/cache/varnish"]
 
 ADD boot.sh /boot.sh
 RUN chmod 0700 /boot.sh
