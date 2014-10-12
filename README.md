@@ -347,7 +347,7 @@ Please what ever you see or think is wrong tweet it to @schumacherfm, create an 
 ### @todo
 
 - Maybe [docker fig](http://www.fig.sh/)
-- 
+- Switch to `FROM phusion/baseimage`
 
 License
 -------
