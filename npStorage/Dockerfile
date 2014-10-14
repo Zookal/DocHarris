@@ -1,21 +1,16 @@
-FROM dockerfile/ubuntu
+FROM phusion/baseimage:0.9.15
+MAINTAINER Cyrill Schumacher <cyrill@zookal.com>
+ENV HOME /root
+RUN rm -rf /etc/service/sshd /etc/my_init.d/00_regen_ssh_host_keys.sh
+# Use baseimage-docker's init system.
+CMD ["/sbin/my_init"]
 
 # npStorage Container n=nginx p=php Storage
 
-MAINTAINER Cyrill Schumacher <cyrill@zookal.com>
-
-# Keep upstart from complaining
-RUN dpkg-divert --local --rename --add /sbin/initctl
-RUN ln -sf /bin/true /sbin/initctl
-
-# git is not needed here but included in the base docker image.
-RUN apt-get remove -y git
-
-ADD . /configs
-RUN chmod 700 /configs/boot.sh
+RUN mkdir /etc/service/bootstorage
+ADD boot.sh /etc/service/bootstorage/run
+RUN chmod 700 /etc/service/bootstorage/run
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 VOLUME ["/var/www/site", "/var/www/data/php", "/var/www/data/nginx", "/var/www/data/media", "/var/www/data/sitemap", "/var/www/data/var"]
-
-CMD ["/configs/boot.sh"]
