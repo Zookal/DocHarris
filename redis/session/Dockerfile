@@ -1,16 +1,19 @@
-#
-# Redis Dockerfile
-#
-# https://github.com/dockerfile/redis
-#
+FROM phusion/baseimage:0.9.15
+ENV HOME /root
+RUN rm -rf /etc/service/sshd /etc/my_init.d/00_regen_ssh_host_keys.sh
+# Use baseimage-docker's init system.
+CMD ["/sbin/my_init"]
 
-# Pull base image.
-FROM dockerfile/ubuntu
+RUN \
+  sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
+  apt-get update && \
+  apt-get install -y build-essential && \
+  apt-get install -y software-properties-common
 
 # Install Redis.
 RUN \
   cd /tmp && \
-  wget http://download.redis.io/redis-stable.tar.gz && \
+  curl -LO http://download.redis.io/redis-stable.tar.gz && \
   tar xvzf redis-stable.tar.gz && \
   cd redis-stable && \
   make && \
@@ -22,6 +25,11 @@ RUN \
 ADD redis-base.conf /etc/redis/
 ADD redis-ses.conf /etc/redis/
 
+RUN mkdir /etc/service/redis
+ADD redis.sh /etc/service/redis/run
+RUN chmod 700 /etc/service/redis/run
+RUN useradd -s /usr/sbin/nologin -r -M -d /nonexistent -g www-data redis
+
 # Define mountable directories.
 VOLUME ["/data"]
 
@@ -31,5 +39,5 @@ WORKDIR /data
 # Expose ports.
 EXPOSE 6380
 
-# Define default command.
-CMD ["redis-server", "/etc/redis/redis-ses.conf"]
+# Clean up APT when done.
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
