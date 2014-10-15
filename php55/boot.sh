@@ -21,4 +21,5 @@ fi
 # run command update-exim4.conf to update update-exim4.conf.conf
 update-exim4.conf
 service exim4 restart
-/usr/bin/supervisord
+
+exec /usr/sbin/php5-fpm -c /etc/php5/fpm/ -y /etc/php5/fpm/php-fpm.conf

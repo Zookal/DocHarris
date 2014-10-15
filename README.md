@@ -239,16 +239,15 @@ Should look like this:
 
 ```
 $ docker ps -a
-CONTAINER ID        IMAGE                              COMMAND                CREATED              STATUS                     PORTS                                      NAMES
-7c32179f05b5        crosbymichael/dockerui:latest      "./dockerui -e /dock   About a minute ago   Up About a minute          0.0.0.0:9000->9000/tcp                     dockerui
-6a7240217004        docharris/nginx:v1.0.162           "nginx"                3 minutes ago        Up 3 minutes               0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp   nginx
-d991e16d795e        docharris/php55:v1.0.5517          "/configs/boot.sh"     3 minutes ago        Up 3 minutes               9000/tcp                                   nginx/php,php
-39092564dfa3        docharris/npstorage:v1.0.0         "/configs/boot.sh"     3 minutes ago        Exited (0) 3 minutes ago                                              npstorage
-441f055339bf        docharris/mysql55:v1.0.5538        "/run.sh"              3 minutes ago        Up 3 minutes               0.0.0.0:3306->3306/tcp                     DocHarrisMySQL,nginx/php/DocHarrisMySQL,php/DocHarrisMySQL
-22bd1739e193        docharris/redissession:v1.0.2817   "redis-server /etc/r   3 minutes ago        Up 3 minutes               6380/tcp                                   nginx/php/redissession,php/redissession,redissession
-e47e9c8756da        docharris/redisobject:v1.0.2817    "redis-server /etc/r   3 minutes ago        Up 3 minutes               6379/tcp                                   nginx/php/redisobject,php/redisobject,redisobject
-f5ab4b7c3582        dockerfile/ubuntu:latest           "echo 'Redis Storage   3 minutes ago        Exited (0) 3 minutes ago                                              RedisStorage
-4c9a884017cf        docharris/mailcatcher:v1.0.0512    "/bin/sh -c 'mailcat   3 minutes ago        Up 3 minutes               25/tcp, 0.0.0.0:1080->1080/tcp             mailcatcher,nginx/php/mailcatcher,php/mailcatcher
+CONTAINER ID        IMAGE                             COMMAND                CREATED             STATUS                   PORTS                                      NAMES
+3878874b2e53        docharris/nginx:v1.0.162          "nginx"                15 hours ago        Up 17 minutes            0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp   nginx
+4d547ce9ad09        docharris/php55:latest            "/sbin/my_init"        15 hours ago        Up 20 minutes            9000/tcp                                   nginx/php,php
+66992efff9d0        docharris/mailcatcher:v1.0.0512   "/bin/sh -c 'mailcat   15 hours ago        Up 27 minutes            25/tcp, 0.0.0.0:1080->1080/tcp             mailcatcher,nginx/php/mailcatcher,php/mailcatcher
+e1162135c0ff        docharris/mysql55:v1.0.5538       "/run.sh"              15 hours ago        Up 32 minutes            0.0.0.0:3306->3306/tcp                     DocHarrisMySQL,nginx/php/DocHarrisMySQL,php/DocHarrisMySQL
+82d155658e8c        docharris/npstorage:latest        "/sbin/my_init"        16 hours ago        Up About an hour                                                    npstorage
+1ad4516fa165        docharris/redissession:latest     "/sbin/my_init"        18 hours ago        Up 3 hours               6380/tcp                                   nginx/php/redissession,php/redissession,redissession
+9dde9cd1306e        docharris/redisobject:latest      "/sbin/my_init"        18 hours ago        Up 3 hours               6379/tcp                                   nginx/php/redisobject,php/redisobject,redisobject
+c85a95f3bad7        phusion/baseimage:0.9.15          "echo 'Redis Storage   18 hours ago        Exited (0) 3 hours ago                                              RedisStorage
 ```
 
 # Docker Helpers
@@ -347,7 +346,8 @@ Please what ever you see or think is wrong tweet it to @schumacherfm, create an 
 ### @todo
 
 - Maybe [docker fig](http://www.fig.sh/)
-- Switch to `FROM phusion/baseimage`
+
+No all containers have been switched to phusion/baseimage because some are not necessary.
 
 License
 -------

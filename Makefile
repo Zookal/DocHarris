@@ -2,19 +2,19 @@ CONTAINERS := $(shell docker ps -a -q)
 IMAGES := $(shell docker images -a -q)
 
 pull-dev:
-	docker pull docharris/redisobject:v1.0.2817
-	docker pull docharris/redissession:v1.0.2817
+	docker pull docharris/redisobject:v1.1.2817
+	docker pull docharris/redissession:v1.1.2817
 	docker pull docharris/mysql55:v1.0.5538
 	docker pull docharris/mailcatcher:v1.0.0512
-	docker pull docharris/npstorage:v1.0.0
-	docker pull docharris/php55:v1.0.5517
+	docker pull docharris/npstorage:v1.1.0
+	docker pull docharris/php55:v1.1.5517
 	docker pull docharris/nginx:v1.0.162
 
 pull-prod:
-    docker pull docharris/npstorage:v1.0.0
-	docker pull docharris/redisobject:v1.0.2817
-	docker pull docharris/redissession:v1.0.2817
-	docker pull docharris/php55:v1.0.5517
+    docker pull docharris/npstorage:v1.1.0
+	docker pull docharris/redisobject:v1.1.2817
+	docker pull docharris/redissession:v1.1.2817
+	docker pull docharris/php55:v1.1.5517
 	docker pull docharris/nginx:v1.0.162
 
 build:
