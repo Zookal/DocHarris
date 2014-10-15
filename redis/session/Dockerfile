@@ -29,7 +29,7 @@ ADD redis-ses.conf /etc/redis/
 RUN mkdir /etc/service/redis
 ADD redis.sh /etc/service/redis/run
 RUN chmod 700 /etc/service/redis/run
-RUN useradd -s /usr/sbin/nologin -r -M -d /nonexistent -g www-data redis
+RUN useradd -s /usr/sbin/nologin -r -M -d /nonexistent -g users redis
 
 # Define mountable directories.
 VOLUME ["/data"]
