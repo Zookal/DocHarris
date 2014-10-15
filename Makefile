@@ -18,6 +18,7 @@ pull-prod:
 	docker pull docharris/nginx:v1.0.162
 
 build:
+	docker build -t="docharris/redisstorage" redis/storage/
 	docker build -t="docharris/redisobject" redis/object/
 	docker build -t="docharris/redissession" redis/session/
 	docker build -t="docharris/mysql55" mysql/5.5/
@@ -29,8 +30,9 @@ build:
 
 run-dev:
 	docker run -d --name mailcatcher -p 1080:1080 docharris/mailcatcher
-	docker run -d --name redisobject docharris/redisobject
-	docker run -d --name redissession docharris/redissession
+	docker run -d -v /var/www/data/redis:/data --name RedisStorage docharris/redisstorage
+	docker run -d --volumes-from RedisStorage --name redisobject docharris/redisobject
+	docker run -d --volumes-from RedisStorage --name redissession docharris/redissession
 	docker run --name DocHarrisMySQL -d -p 3306:3306 docharris/mysql55
 	docker run -d --name npstorage \
 	-v /var/www/site:/var/www/site \
@@ -42,7 +44,7 @@ run-dev:
 	docharris/npstorage
 	docker run -d --name php \
 	--volumes-from=npstorage \
-	-e PHP_ENV=dev \
+	-e MY_ENV=dev \
 	--link redisobject:redisobject \
 	--link redissession:redissession \
 	--link DocHarrisMySQL:DocHarrisMySQL \

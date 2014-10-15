@@ -133,7 +133,7 @@ Build the php container:
     docker run -d --name php \
       --volumes-from=npstorage \
       -v /var/www/site/path-to/etc/php55/development:/etc/php5/fpm \
-      -e PHP_ENV=dev \
+      -e MY_ENV=dev \
       --link redisobject:redisobject \
       --link redissession:redissession \
       --link DocHarrisMySQL:DocHarrisMySQL \
@@ -147,7 +147,7 @@ The `-v` switch is optional and maps your custom php config into the fpm folder.
     docker run -ti --rm --name php \
       --volumes-from=npstorage \
       -v /var/www/site/path-to/etc/php55/development:/etc/php5/fpm \
-      -e PHP_ENV=dev \
+      -e MY_ENV=dev \
       --link redisobject:redisobject \
       --link redissession:redissession \
       --link DocHarrisMySQL:DocHarrisMySQL \
@@ -173,7 +173,7 @@ If you need to enter a container use nsenter [https://github.com/jpetazzo/nsente
     docker run -d --name php \
       --volumes-from=npstorage \
       -v /path-to/etc/php55/production:/etc/php5/fpm \
-      -e PHP_ENV=prod \
+      -e MY_ENV=prod \
       --link redisobject:redisobject \
       --link redissession:redissession \
       docharris/php55
